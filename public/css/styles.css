@@ -173,6 +173,16 @@ img {
 #info-container, #event-submit{
     margin: 20px 0px;    
 }
+#items-list{
+    list-style: none;
+    padding: 0;
+}
+
+#items-list li{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
 
 /*footer*/
 .footer{

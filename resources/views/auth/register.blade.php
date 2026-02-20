@@ -1,120 +1,60 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro</title>
+<x-guest-layout>
+    <x-authentication-card>
+        <x-slot name="logo">
+            <x-authentication-card-logo />
+        </x-slot>
 
-    {{-- Tailwind CDN (ideal só pra dev/teste) --}}
-    <script src="https://cdn.tailwindcss.com"></script>
+        <x-validation-errors class="mb-4" />
 
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        bg: '#0f172a',
-                        card: '#020617',
-                        primary: '#38bdf8'
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-
-<body class="dark bg-bg min-h-screen flex items-center justify-center px-4">
-
-    <div class="w-full max-w-md bg-card rounded-2xl shadow-xl p-8">
-
-        <h1 class="text-3xl font-bold text-white text-center mb-6">
-            Criar conta
-        </h1>
-
-        {{-- Erros de validação --}}
-        @if ($errors->any())
-            <div class="bg-red-500/20 text-red-400 text-sm p-3 rounded mb-4">
-                <ul class="list-disc list-inside">
-                    @foreach ($errors->all() as $erro)
-                        <li>{{ $erro }}</li>
-                    @endforeach
-                </ul>
-            </div>
-         @endif
-
-        <form method="POST" action="{{ route('register.post') }}" class="space-y-5">
+        <form method="POST" action="{{ route('register') }}">
             @csrf
 
             <div>
-                <label class="block text-sm text-gray-400 mb-1">Nome</label>
-                <input
-                    type="text"
-                    name="name"
-                    value="{{ old('name') }}"
-                    required
-                    class="w-full px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                >
+                <x-label for="name" value="{{ __('Name') }}" />
+                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             </div>
 
-            <div>   
-                <label class="block text-sm text-gray-400 mb-1">Email</label>
-                <input
-                    type="email"
-                    name="email"
-                    value="{{ old('email') }}"
-                    required
-                    class="w-full px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                >
+            <div class="mt-4">
+                <x-label for="email" value="{{ __('Email') }}" />
+                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             </div>
 
-            <div>
-                <label class="block text-sm text-gray-400 mb-1">Senha</label>
-                <div class="relative">
-                    <input
-                        id="password"
-                        type="password"
-                        name="password"
-                        required
-                        class="w-full px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                    >
-                    <button type="button"
-                        onclick="togglePassword('password')"
-                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
-                        ver
-                    </button>
+            <div class="mt-4">
+                <x-label for="password" value="{{ __('Password') }}" />
+                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+            </div>
+
+            <div class="mt-4">
+                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
+                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+            </div>
+
+            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
+                <div class="mt-4">
+                    <x-label for="terms">
+                        <div class="flex items-center">
+                            <x-checkbox name="terms" id="terms" required />
+
+                            <div class="ms-2">
+                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
+                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Terms of Service').'</a>',
+                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Privacy Policy').'</a>',
+                                ]) !!}
+                            </div>
+                        </div>
+                    </x-label>
                 </div>
-            </div>
+            @endif
 
-            <div>
-                <label class="block text-sm text-gray-400 mb-1">Confirmar senha</label>
-                <input
-                    type="password"
-                    name="password_confirmation"
-                    required
-                    class="w-full px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                >
-            </div>
+            <div class="flex items-center justify-end mt-4">
+                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+                    {{ __('Already registered?') }}
+                </a>
 
-            <button
-                type="submit"
-                class="w-full bg-primary text-slate-900 font-semibold py-2 rounded-lg hover:bg-sky-400 transition">
-                Cadastrar
-            </button>
+                <x-button class="ms-4">
+                    {{ __('Register') }}
+                </x-button>
+            </div>
         </form>
-
-        <p class="text-gray-500 text-sm text-center mt-6">
-            Já tem conta?
-            <a href="{{ route('login') }}" class="text-primary hover:underline">Entrar</a>
-        </p>
-
-    </div>
-
-    <script>
-        function togglePassword(id) {
-            const input = document.getElementById(id);
-            input.type = input.type === 'password' ? 'text' : 'password';
-        }
-    </script>
-
-</body>
-</html>
+    </x-authentication-card>
+</x-guest-layout>

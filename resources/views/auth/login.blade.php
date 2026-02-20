@@ -1,96 +1,48 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
+<x-guest-layout>
+    <x-authentication-card>
+        <x-slot name="logo">
+            <x-authentication-card-logo />
+        </x-slot>
 
-    {{-- Tailwind CDN (para dev/teste) --}}
-    <script src="https://cdn.tailwindcss.com"></script>
+        <x-validation-errors class="mb-4" />
 
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        bg: '#0f172a',
-                        card: '#020617',
-                        primary: '#38bdf8'
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-
-<body class="dark bg-bg min-h-screen flex items-center justify-center px-4">
-
-    <div class="w-full max-w-md bg-card rounded-2xl shadow-xl p-8">
-
-        <h1 class="text-3xl font-bold text-white text-center mb-6">
-            Entrar
-        </h1>
-
-        {{-- Mensagem de erro --}}
-        @if (session('error'))
-            <div class="bg-red-500/20 text-red-400 text-sm p-3 rounded mb-4">
-                {{ session('error') }}
+        @session('status')
+            <div class="mb-4 font-medium text-sm text-green-600">
+                {{ $value }}
             </div>
-        @endif
+        @endsession
 
-        <form method="POST" action="{{ route('login.post') }}" class="space-y-5">
+        <form method="POST" action="{{ route('login') }}">
             @csrf
 
             <div>
-                <label class="block text-sm text-gray-400 mb-1">Email</label>
-                <input
-                    type="email"
-                    name="email"
-                    value="{{ old('email') }}"
-                    required
-                    class="w-full px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                >
+                <x-label for="email" value="{{ __('Email') }}" />
+                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             </div>
 
-            <div>
-                <label class="block text-sm text-gray-400 mb-1">Senha</label>
-                <div class="relative">
-                    <input
-                        id="password"
-                        type="password"
-                        name="password"
-                        required
-                        class="w-full px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                    >
-
-                    <button type="button"
-                        onclick="togglePassword('password')"
-                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
-                        ver
-                    </button>
-                </div>
+            <div class="mt-4">
+                <x-label for="password" value="{{ __('Password') }}" />
+                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
             </div>
 
-            <button
-                type="submit"
-                class="w-full bg-primary text-slate-900 font-semibold py-2 rounded-lg hover:bg-sky-400 transition">
-                Entrar
-            </button>
+            <div class="block mt-4">
+                <label for="remember_me" class="flex items-center">
+                    <x-checkbox id="remember_me" name="remember" />
+                    <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+                </label>
+            </div>
+
+            <div class="flex items-center justify-end mt-4">
+                @if (Route::has('password.request'))
+                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
+                        {{ __('Forgot your password?') }}
+                    </a>
+                @endif
+
+                <x-button class="ms-4">
+                    {{ __('Log in') }}
+                </x-button>
+            </div>
         </form>
-
-        <p class="text-gray-500 text-sm text-center mt-6">
-            Não tem conta?
-            <a href="{{ route('register') }}" class="text-primary hover:underline">Criar agora</a>
-        </p>
-
-    </div>
-
-    <script>
-        function togglePassword(id) {
-            const input = document.getElementById(id);
-            input.type = input.type === 'password' ? 'text' : 'password';
-        }
-    </script>
-
-</body>
-</html>
+    </x-authentication-card>
+</x-guest-layout>
