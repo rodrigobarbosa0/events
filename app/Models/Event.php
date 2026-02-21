@@ -8,8 +8,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Event extends Model
 {
     use HasFactory;
+    
     protected $casts = [
-        'items' => 'array'
+        'items' => 'array',
+        'date' => 'datetime',
     ];
-    protected $date = ['date'];
+
+    protected $guarded = [];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

@@ -52,6 +52,16 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    public function eventsAsParticipant()
+    {
+        return $this->belongsToMany(Event::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
