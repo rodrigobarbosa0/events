@@ -3,12 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RegistrationController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-
-
 
 Route::get('/teste', [EventController::class, 'index']);
 
@@ -18,6 +17,8 @@ Route::post('/events', [EventController::class, 'store']);
 Route::delete('/events/{id}', [EventController::class, 'destroy'])->middleware('auth');
 Route::get('/events/edit/{id}', [EventController::class, 'edit'])->middleware('auth');
 Route::put('/events/update/{id}', [EventController::class, 'update'])->middleware('auth');
+
+Route::post('/events/{event}/subscribe', [RegistrationController::class, 'subscribe']);
     
 Route::get('/produtos', function () {
 
