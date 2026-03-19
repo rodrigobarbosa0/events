@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text("description");
             $table->string("city");
             $table->boolean("private");
-            $table->integer('price')->nullable();
+            $table->decimal('price', 10, 2)->default(0.00);
         });
     }
 

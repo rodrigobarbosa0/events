@@ -12,16 +12,12 @@
                 <h1>{{ $event->title }}</h1>
                 <p class="events-city"><ion-icon name="location-outline"></ion-icon>{{ $event->city}}</p>
                 <p class="events-participants"><ion-icon name="people-outline"></ion-icon>{{ count($event->users) }} participantes</p>
-                        <p class="event-owner"><ion-icon name="star-outline"></ion-icon>{{ $eventOwner['name'] }}</p>
+                <p class="event-owner"><ion-icon name="star-outline"></ion-icon>{{ $eventOwner['name'] }}</p>
+                <p class="event-price"><ion-icon name="card-outline"></ion-icon>valor do ingresso: R$ {{ number_format($event->price, 2, ',', '.') }}</p>
                 @if (!$hasUserJoined)
-                    <form action="/events/join/{{ $event->id }}" method="POST">
-                    @csrf
-                    <a href="/events/join/{{ $event->id }}" class="btn btn-primary" 
-                        id="event-submit"
-                        onclick="event.preventDefault(); 
-                        this.closest('form').submit()">
-                        Confirmar Presença</a>
-                </form>
+                        <a href="{{ url('/events/payment/' . $event->id) }}" class="btn btn-primary">
+                                Confirmar Presença
+                        </a>
                 @else
                     <p class="already-joined-msg">Você já está participando deste evento!</p>
                 @endif

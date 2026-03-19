@@ -74,7 +74,7 @@
                 </tbody>
             </table>
         @else
-            <p>Você ainda não está participando de nenhum evento, <a href="/">veja todos os eventos</a></p>
+            <p>Você ainda não está participando de nenhum evento, <a href="/teste">veja todos os eventos</a></p>
         @endif
     </div>
 

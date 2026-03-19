@@ -30,6 +30,10 @@
                 <option value="1">Sim</option>
             </select>
         </div>
+        <div>
+            <label for="title">Valor do ingresso:</label>
+            <input type="number" class="form-control" id="price" name="price" placeholder="Valor do ingresso" required>
+        </div>
         <div class="form-group">
             <label for="title">Descrição:</label>
             <textarea  id="description" name="description" class="form-control" placeholder="Oque vai acontecer no evento" required></textarea>
